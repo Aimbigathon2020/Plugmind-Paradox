@@ -1,0 +1,38 @@
+#include <ESP8266WiFi.h>
+#include<dht.h> 
+dht DHT;
+const int dht1=D6;
+
+int moist,temp,hum;
+
+void setup() {
+  pinMode(A0,INPUT); 
+  pinMode(D1,OUTPUT);  
+  Serial.begin(9600); 
+}
+
+void loop() {
+  moist = analogRead(A0);
+  Serial.print("Moisture:");
+  Serial.println(moist);
+  
+  int chk = DHT.read11(dht1);
+  temp = DHT.temperature;
+  hum = DHT.humidity;
+  Serial.print("Humidity:");
+  Serial.print(hum);
+  Serial.print("%  ");
+  Serial.print("Temperature:");
+  Serial.print(temp);
+  Serial.println("C");
+
+ if(moist<450 || hum<60 ||temp>45)
+ {
+  digitalWrite(D1,HIGH);
+ }
+ else
+ {
+   digitalWrite(D1,LOW);
+ }
+ delay(1000);
+}
